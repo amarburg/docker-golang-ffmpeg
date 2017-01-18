@@ -19,7 +19,7 @@ ENV         FFMPEG_VERSION=3.2.2 \
 
 RUN      buildDeps="autoconf \
                     automake \
-		                  apt-utils \
+                    apt-utils \
                     cmake \
                     curl \
                     bzip2 \
@@ -177,7 +177,7 @@ RUN      buildDeps="autoconf \
         rm -rf ${DIR} && \
 ## cleanup
        cd && \
-       #apt-get purge -y ${buildDeps} && \
+       ldconfig -v && \
        apt-get autoremove -y && \
        apt-get clean -y && \
        rm -rf /var/lib/apt/lists && \
