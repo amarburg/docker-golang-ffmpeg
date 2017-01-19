@@ -17,18 +17,20 @@ X264_VERSION=20160826-2245-stable
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 SRC=/usr/local
 
-DIR=$(mktemp -d) && cd ${DIR} && \
 ## yasm http://yasm.tortall.net/
-curl -sL https://github.com/yasm/yasm/archive/v${YASM_VERSION}.tar.gz | \
+DIR=$(mktemp -d) && cd ${DIR} && \
+curl -L https://github.com/yasm/yasm/archive/v${YASM_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 ./autogen.sh && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --datadir=${DIR} && \
 make && \
 make install && \
 make distclean && \
-rm -rf ${DIR} && \
-DIR=$(mktemp -d) && cd ${DIR} && \
+rm -rf ${DIR} 
+
+
 ## x264 http://www.videolan.org/developers/x264.html
+DIR=$(mktemp -d) && cd ${DIR} && \
 curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
 tar -jx --strip-components=1 && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-static && \

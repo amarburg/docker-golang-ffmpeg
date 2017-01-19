@@ -4,6 +4,9 @@ box: golang:1.8-wheezy
 ## Development/testing pipeline
 dev:
     steps:
+      - install-packages:
+         packages: autoconf bzip2 cmake libtool libssl-dev
+
       - script:
           name: Configure environment
           code: |
@@ -19,10 +22,13 @@ dev:
 # http://devcenter.wercker.com/docs/pipelines/index.html
 build:
   steps:
+    - install-packages:
+         packages: autoconf bzip2 cmake libtool libssl-dev
+
     - script:
         name: Configure environment
         code: |
-          sh source ./environment.sh
+          sh ./environment.sh
 
     - script:
         name: Build FFMPEG
