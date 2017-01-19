@@ -1,0 +1,38 @@
+# wercker version for box creation
+box: golang:1.8-wheezy
+
+## Development/testing pipeline
+dev:
+    steps:
+      - script:
+          name: Configure environment
+          code: |
+            sh ./environment.sh
+            
+      - script:
+          name: Build FFMPEG
+          code: |
+            ./build_ffmpeg.sh
+
+# This is the build pipeline. Pipelines are the core of wercker
+# Read more about pipelines on our dev center
+# http://devcenter.wercker.com/docs/pipelines/index.html
+build:
+  steps:
+    - script:
+        name: Configure environment
+        code: |
+          sh source ./environment.sh
+
+    - script:
+        name: Build FFMPEG
+        code: |
+          ./build_ffmpeg.sh
+
+    # Push completed builds to Docker hub
+    - internal/docker-push:
+        username: $USERNAME
+        password: $PASSWORD
+        tag: wheezy-1.8
+        repository: amarburg/golang-ffmpeg
+        registry: https://registry.hub.docker.com
