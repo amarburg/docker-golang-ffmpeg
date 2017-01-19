@@ -1,6 +1,7 @@
 
+DockerRepo = ENV['DOCKER_REPO'] or abort "DOCKER_REPO not set"
+DockerTag  = ENV['DOCKER_TAG'] or abort "DOCKER_TAG not set"
 
-`./environment.sh` 
 
 TaggedName = "%s:%s"  % [ ENV['DOCKER_REPO'], ENV['DOCKER_TAG'] ]
 
