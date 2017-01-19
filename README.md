@@ -1,0 +1,1 @@
+Extends the [canonical Go language Docker images](https://hub.docker.com/_/golang/) with a compiled version of FFMpeg and associated libraries:  AAC, LAME, OGG, Opus, Theora, Vorbis, VPX, XVid, X264, X265
