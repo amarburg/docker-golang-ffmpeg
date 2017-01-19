@@ -1,6 +1,6 @@
 
 
-`sh  ./environment.sh` 
+`./environment.sh` 
 
 TaggedName = "%s:%s"  % [ ENV['DOCKER_REPO'], ENV['DOCKER_TAG'] ]
 

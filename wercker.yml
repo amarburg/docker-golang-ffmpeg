@@ -5,7 +5,7 @@ box: golang:1.8-wheezy
 dev:
     steps:
       - install-packages:
-         packages: autoconf bzip2 cmake
+         packages: autoconf bzip2 cmake libtool libssl-dev
 
       - script:
           name: Configure environment
@@ -23,7 +23,7 @@ dev:
 build:
   steps:
     - install-packages:
-         packages: autoconf bzip2 cmake
+         packages: autoconf bzip2 cmake libtool libssl-dev
 
     - script:
         name: Configure environment
