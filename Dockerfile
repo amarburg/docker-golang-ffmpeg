@@ -21,8 +21,8 @@ RUN      buildDeps="autoconf \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps} ca-certificates
 
-COPY	build_ffmpeg.sh /tmp
-RUN     /tmp/build_ffmpeg.sh
+COPY	build_ffmpeg.sh /root
+RUN     /root/build_ffmpeg.sh
 
 RUN    cd && \
        apt-get autoremove -y && \
