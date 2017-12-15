@@ -26,12 +26,11 @@ tar -zx --strip-components=1 && \
 make && \
 make install && \
 make distclean && \
-rm -rf ${DIR} 
-
-
+rm -rf ${DIR} && \
 ## x264 http://www.videolan.org/developers/x264.html
+## videolan.org's certs aren't quite right, use --insecure
 DIR=$(mktemp -d) && cd ${DIR} && \
-curl -sL https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
+curl -sL --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
 tar -jx --strip-components=1 && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-static && \
 make && \
