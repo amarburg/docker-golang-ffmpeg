@@ -36,9 +36,9 @@ build:
           ./build_ffmpeg.sh
 
     # Push completed builds to Docker hub
-    - internal/docker-push:
-        username: $USERNAME
-        password: $PASSWORD
-        tag: wheezy-1.8
-        repository: amarburg/golang-ffmpeg
-        registry: https://registry.hub.docker.com
+#    - internal/docker-push:
+#        username: $USERNAME
+#        password: $PASSWORD
+#        tag: wheezy-1.8
+#        repository: amarburg/golang-ffmpeg
+#        registry: https://registry.hub.docker.com
