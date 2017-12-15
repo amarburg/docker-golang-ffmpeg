@@ -1,5 +1,5 @@
 # wercker version for box creation
-box: golang:1.8-wheezy
+box: golang:1.9-wheezy
 
 ## Development/testing pipeline
 dev:
@@ -11,7 +11,7 @@ dev:
           name: Configure environment
           code: |
             sh ./environment.sh
-            
+
       - script:
           name: Build FFMPEG
           code: |
@@ -35,10 +35,10 @@ build:
         code: |
           ./build_ffmpeg.sh
 
-    # Push completed builds to Docker hub
-    - internal/docker-push:
-        username: $USERNAME
-        password: $PASSWORD
-        tag: wheezy-1.8
-        repository: amarburg/golang-ffmpeg
-        registry: https://registry.hub.docker.com
+    # # Push completed builds to Docker hub
+    # - internal/docker-push:
+    #     username: $USERNAME
+    #     password: $PASSWORD
+    #     tag: wheezy-1.9
+    #     repository: amarburg/golang-ffmpeg
+    #     registry: https://registry.hub.docker.com
