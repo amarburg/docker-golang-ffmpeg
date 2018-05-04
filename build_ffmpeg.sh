@@ -1,39 +1,39 @@
 #!/bin/sh
 
 ### From https://hub.docker.com/r/jrottenberg/ffmpeg/
-FFMPEG_VERSION=3.2.2
+FFMPEG_VERSION=3.4.2
 FAAC_VERSION=1.28
-FDKAAC_VERSION=0.1.4
+FDKAAC_VERSION=0.1.6
 LAME_VERSION=3.99.5
 OGG_VERSION=1.3.2
 OPUS_VERSION=1.1.1
 THEORA_VERSION=1.1.1
-YASM_VERSION=1.3.0
+NASM_VERSION=2.13.03
 VORBIS_VERSION=1.3.5
-VPX_VERSION=1.6.0
+VPX_VERSION=1.7.0
 XVID_VERSION=1.3.4
 X265_VERSION=2.0
 X264_VERSION=20160826-2245-stable
 PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 SRC=/usr/local
 
-## yasm http://yasm.tortall.net/
+## NASM
 DIR=$(mktemp -d) && cd ${DIR} && \
-curl -L https://github.com/yasm/yasm/archive/v${YASM_VERSION}.tar.gz | \
+curl -L https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 ./autogen.sh && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --datadir=${DIR} && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
 ## x264 http://www.videolan.org/developers/x264.html
 ## videolan.org's certs aren't quite right, use --insecure
 DIR=$(mktemp -d) && cd ${DIR} && \
-curl -sL --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
+curl -sL --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/last_stable_x264.tar.bz2 | \
 tar -jx --strip-components=1 && \
-./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-static && \
-make && \
+./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-static --enable-pic && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -50,7 +50,7 @@ DIR=$(mktemp -d) && cd ${DIR} && \
 curl -sL http://downloads.xiph.org/releases/ogg/libogg-${OGG_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-shared --datadir=${DIR} && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -60,7 +60,7 @@ curl -sL http://downloads.xiph.org/releases/opus/opus-${OPUS_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 autoreconf -fiv && \
 ./configure --prefix="${SRC}" --disable-shared --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -70,7 +70,7 @@ curl -sL http://downloads.xiph.org/releases/vorbis/libvorbis-${VORBIS_VERSION}.t
 tar -zx --strip-components=1 && \
 ./configure --prefix="${SRC}" --with-ogg="${SRC}" --bindir="${SRC}/bin" \
 --disable-shared --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -80,7 +80,7 @@ curl -sL http://downloads.xiph.org/releases/theora/libtheora-${THEORA_VERSION}.t
 tar -jx --strip-components=1 && \
 ./configure --prefix="${SRC}" --with-ogg="${SRC}" --bindir="${SRC}/bin" \
 --disable-shared --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -89,7 +89,7 @@ DIR=$(mktemp -d) && cd ${DIR} && \
 curl -sL https://codeload.github.com/webmproject/libvpx/tar.gz/v${VPX_VERSION} | \
 tar -zx --strip-components=1 && \
 ./configure --prefix="${SRC}" --enable-vp8 --enable-vp9 --disable-examples --disable-docs && \
-make && \
+make -j && \
 make install && \
 make clean && \
 rm -rf ${DIR} && \
@@ -98,7 +98,7 @@ DIR=$(mktemp -d) && cd ${DIR} && \
 curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-shared --enable-nasm --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 make distclean&& \
 rm -rf ${DIR} && \
@@ -108,7 +108,7 @@ curl -sL http://downloads.xvid.org/downloads/xvidcore-${XVID_VERSION}.tar.gz | \
 tar -zx && \
 cd xvidcore/build/generic && \
 ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 rm -rf ${DIR} && \
 DIR=$(mktemp -d) && cd ${DIR} && \
@@ -117,7 +117,7 @@ curl -sL https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz |
 tar -zx --strip-components=1 && \
 autoreconf -fiv && \
 ./configure --prefix="${SRC}" --disable-shared --datadir="${DIR}" && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 rm -rf ${DIR} && \
@@ -148,13 +148,10 @@ tar -zx --strip-components=1 && \
           --disable-debug \
           --enable-small \
           --enable-openssl && \
-make && \
+make -j && \
 make install && \
 make distclean && \
 hash -r && \
-cd tools && \
-make qt-faststart && \
-cp qt-faststart ${SRC}/bin && \
 rm -rf ${DIR} &&
 ldconfig -v &&
 ffmpeg -buildconf

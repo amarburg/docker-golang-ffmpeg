@@ -1,4 +1,4 @@
-FROM golang:1.8-wheezy
+FROM golang:1.10-stretch
 
 RUN      buildDeps="autoconf \
                     automake \
@@ -11,7 +11,6 @@ RUN      buildDeps="autoconf \
                     git \
                     libtool \
                     make \
-                    nasm \
                     perl \
                     pkg-config \
                     python \

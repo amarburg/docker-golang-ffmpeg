@@ -1,4 +1,4 @@
 
 
-export DOCKER_TAG="wheezy-1.8"
+export DOCKER_TAG="stretch-1.10"
 export DOCKER_REPO="amarburg/golang-ffmpeg"
