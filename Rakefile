@@ -1,14 +1,16 @@
 
-DockerRepo = ENV['DOCKER_REPO'] or abort "DOCKER_REPO not set"
+DockerRepo = ENV['DOCKER_REPO'] or abort "DOCKER_REPO not set, "
 DockerTag  = ENV['DOCKER_TAG'] or abort "DOCKER_TAG not set"
 
-
 TaggedName = "%s:%s"  % [ ENV['DOCKER_REPO'], ENV['DOCKER_TAG'] ]
+
+
+task :default => "docker:build"
 
 namespace :docker do
 
   task :build do
-    sh "docker build --tag %s ." % TaggedName
+    sh "docker build --tag %s --tag latest ." % TaggedName
   end
 
   task :push do
@@ -17,15 +19,17 @@ namespace :docker do
 
 end
 
+namespace :ci do
 
-namespace :wercker do
-
-  task :dev do
-    sh "wercker dev"
-  end
+  CITaggedName = "%s-ci" % TaggedName
 
   task :build do
-    sh "wercker build"
+    chdir 'ci' do
+      sh "docker build --tag %s --tag latest-ci ." % CITaggedName
+    end
   end
 
+  task :push do
+    sh "docker push %s" % CITaggedName
+  end
 end
