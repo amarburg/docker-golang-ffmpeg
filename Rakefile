@@ -7,6 +7,8 @@ TaggedName = "%s:%s"  % [ ENV['DOCKER_REPO'], ENV['DOCKER_TAG'] ]
 
 task :default => "docker:build"
 
+task :all => ["docker:build", "docker:push", "ci:build", "ci:push"]
+
 namespace :docker do
 
   task :build do
