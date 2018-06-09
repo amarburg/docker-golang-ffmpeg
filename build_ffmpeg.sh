@@ -97,7 +97,7 @@ DIR=$(mktemp -d) && cd ${DIR} && \
 ## libmp3lame http://lame.sourceforge.net/
 curl -sL https://downloads.sf.net/project/lame/lame/${LAME_VERSION%.*}/lame-${LAME_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
-./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-shared --enable-nasm --datadir="${DIR}" && \
+./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-shared --enable-nasm  --with-pic --datadir="${DIR}" && \
 make -j && \
 make install && \
 make distclean&& \
@@ -116,7 +116,7 @@ DIR=$(mktemp -d) && cd ${DIR} && \
 curl -sL https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz | \
 tar -zx --strip-components=1 && \
 autoreconf -fiv && \
-./configure --prefix="${SRC}" --disable-shared --datadir="${DIR}" && \
+./configure --prefix="${SRC}" --disable-shared --with-pic --datadir="${DIR}" && \
 make -j && \
 make install && \
 make distclean && \
